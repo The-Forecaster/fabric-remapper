@@ -28,7 +28,6 @@ def process_file(path, table):
             if line.startswith('METHOD'):
                 process_line(line, 'method', table, process_other)
 
-# this will remap the file
 def remap_file(path, table):
     """This will look through the file and replace the occurances of each proxy name with the correct mapping name"""
     fin = open(path, 'r+').read()
@@ -42,7 +41,6 @@ def remap_file(path, table):
         fout.truncate(0)
         fout.write(fin)
 
-# Either process the file or recurse on the directory
 def zipTree(dir, func, table):
     """This will unzip the dir and either process a file with the function provided or unzip the resulting folder and recurse"""
     for file in os.scandir(dir):
