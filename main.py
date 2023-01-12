@@ -16,11 +16,9 @@ def process_other(chunks, table):
     table[chunks[1]] = chunks[2]
 
 def process_file(path, table):
+    """Goes through a mapping file and maps the lines into the table"""
     with open(path, 'r+') as file:
-        lines = file.readlines()
-        counter = 1
-
-        for line in lines:
+        for line in file.readlines():
             line = line.strip()
 
             if line.startswith('CLASS'):
@@ -30,17 +28,15 @@ def process_file(path, table):
             if line.startswith('METHOD'):
                 process_line(line, 'method', table, process_other)
 
-            counter += 1
-
 # this will remap the file
 def remap_file(path, table):
+    """This will look through the file and replace the occurances of each proxy name with the correct mapping name"""
     fin = open(path, 'r+').read()
 
     with open(path, 'w+') as fout:
         for key in table:
             for trailer in ' ', ';', ')', '[', ',', '.', '(', ';', '>', '<':
                 if key + trailer in fin:
-                    print(f'Replaced {key} with {table[key]}')
                     fin = fin.replace(key + trailer, table[key] + trailer)
 
         fout.truncate(0)
@@ -48,6 +44,7 @@ def remap_file(path, table):
 
 # Either process the file or recurse on the directory
 def zipTree(dir, func, table):
+    """This will unzip the dir and either process a file with the function provided or unzip the resulting folder and recurse"""
     for file in os.scandir(dir):
         if not file.is_file():
             zipTree(file, func, table)
