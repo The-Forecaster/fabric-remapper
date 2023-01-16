@@ -64,3 +64,4 @@ if __name__ == '__main__':
     # Replace all the proxy names with their correct mapping
     for file in os.scandir(path_out):
         zipTree(file, remap_file, reference_table)
+        
